@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JV Sports Edge - Prediction</title>
+  <style>
+    :root {
+      --primary-bg: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #ffffff;
+      --accent-color: #ff6b9c;
+      --hover-color: #ff4585;
+      --nav-bg: #0a0a0a;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--primary-bg);
+      color: var(--text-color);
+      min-height: 100vh;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar {
+      background-color: var(--nav-bg);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(255, 107, 156, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    
+    .logo svg {
+      fill: var(--accent-color);
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .nav-links a:hover {
+      color: var(--accent-color);
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background-color: var(--accent-color);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-links a:hover::after {
+      width: 80%;
+    }
+    
+    .header {
+      text-align: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .header h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 3px;
+      background-color: var(--accent-color);
+      border-radius: 2px;
+    }
+    
+    .container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 2rem 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(255, 107, 156, 0.3);
+    }
+    
+    .card-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 120px;
+      background-color: rgba(255, 107, 156, 0.1);
+      padding: 1.5rem;
+    }
+    
+    .card-icon svg {
+      width: 60px;
+      height: 60px;
+      fill: var(--accent-color);
+      transition: transform 0.5s ease;
+    }
+    
+    .card:hover .card-icon svg {
+      transform: scale(1.1);
+    }
+    
+    .card-content {
+      padding: 1.5rem;
+      text-align: center;
+    }
+    
+    .card h2 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .card h2::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--accent-color);
+      transition: width 0.3s ease;
+    }
+    
+    .card:hover h2::after {
+      width: 100%;
+    }
+    
+    .card p {
+      color: #cccccc;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    
+    .btn {
+      display: inline-block;
+      background-color: var(--accent-color);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .btn:hover {
+      background-color: var(--hover-color);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(255, 107, 156, 0.4);
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+      background-color: var(--nav-bg);
+      font-size: 0.9rem;
+    }
+    
+    /* Animation classes */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.8s forwards;
+    }
+    
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .delay-1 {
+      animation-delay: 0.2s;
+    }
+    
+    .delay-2 {
+      animation-delay: 0.4s;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+      
+      .container {
+        padding: 1rem;
+      }
+      
+      .card {
+        max-width: 100%;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .navbar {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+      }
+      
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .header h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm-1 16.5v-2.5h2v2.5h-2zm0-5v-6.5h2v6.5h-2z"/>
+      </svg>
+      <span>JV Sports Edge</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/slr">SLR Prediction</a>
+      <a href="/mlr">MLR Prediction</a>
+    </div>
+  </nav>
+  
+  <header class="header fade-in">
+    <h1>Player Performance Prediction</h1>
+    <p>Advanced analytics to predict and enhance player performance</p>
+  </header>
+  
+  <div class="container">
+    <div class="card fade-in delay-1">
+      <div class="card-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/>
+        </svg>
+      </div>
+      <div class="card-content">
+        <h2>Player Performance Score (SLR)</h2>
+        <p>Predict performance based on training hours using Simple Linear Regression analytics. Get accurate insights with minimal data input.</p>
+        <a href="/slr" class="btn">Try SLR Model</a>
+      </div>
+    </div>
+    
+    <div class="card fade-in delay-2">
+      <div class="card-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <path d="M22 11V3h-7v3H9V3H2v8h7V8h2v10h4v3h7v-8h-7v3h-2V8h2v3h7zM7 9H4V5h3v4zm10 6h3v4h-3v-4zm0-10h3v4h-3V5z"/>
+        </svg>
+      </div>
+      <div class="card-content">
+        <h2>Player Performance Score (MLR)</h2>
+        <p>Advanced prediction using Multiple Linear Regression. Incorporates training hours, fitness level, and past performance for comprehensive analysis.</p>
+        <a href="/mlr" class="btn">Try MLR Model</a>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="footer">
+    <p>&copy; 2025 JV Sports Edge. All rights reserved.</p>
+  </footer>
+  
+  <script>
+    // Add animation classes when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      const elements = document.querySelectorAll('.fade-in');
+      elements.forEach(element => {
+        element.classList.add('active');
+      });
+    });
+    
+    // Add smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>
