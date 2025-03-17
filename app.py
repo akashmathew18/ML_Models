@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 # Load Models
 try:
-    slr_model = joblib.load("Models/slr_model.pkl")
-    mlr_model = joblib.load("Models/mlr_model.pkl")
+    slr_model = joblib.load("Models/SLR_Model.pkl")
+    mlr_model = joblib.load("Models/MLR_Model.pkl")
 except:
     slr_model = None
     mlr_model = None
