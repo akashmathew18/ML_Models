@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PR Prediction - JV Sports Edge</title>
+  <style>
+    :root {
+      --primary-bg: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #ffffff;
+      --accent-color: #ff6b9c;
+      --hover-color: #ff4585;
+      --input-bg: #2a2a2a;
+      --nav-bg: #0a0a0a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--primary-bg);
+      color: var(--text-color);
+      min-height: 100vh;
+      transition: all 0.3s ease;
+    }
+
+    .navbar {
+      background-color: var(--nav-bg);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(255, 107, 156, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .logo svg {
+      fill: var(--accent-color);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-color);
+    }
+
+    .header {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+    }
+
+    .header p {
+      color: #888;
+      font-size: 1.1rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    label svg {
+      vertical-align: middle;
+      margin-right: 0.5rem;
+      fill: var(--accent-color);
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 5px;
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+
+    input[type="number"]:focus {
+      outline: 2px solid var(--accent-color);
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      background-color: var(--hover-color);
+    }
+
+    .result {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background-color: rgba(255, 107, 156, 0.1);
+      border-radius: 5px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .result svg {
+      fill: var(--accent-color);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: #888;
+    }
+
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      margin-left: 0.5rem;
+    }
+
+    .tooltip .tooltip-text {
+      visibility: hidden;
+      width: 200px;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      text-align: center;
+      padding: 0.5rem;
+      border-radius: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path
+          d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm-1 16.5v-2.5h2v2.5h-2zm0-5v-6.5h2v6.5h-2z" />
+      </svg>
+      <span>JV Sports Edge</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/slr">SLR Prediction</a>
+      <a href="/mlr">MLR Prediction</a>
+      <a href="/pr">PR Prediction</a>
+      <a href="/lr">LR Prediction</a>
+      <a href="/kNN">kNN Prediction</a>
+    </div>
+  </nav>
+
+  <header class="header fade-in">
+    <h1>Polynomial Regression Prediction</h1>
+    <p>Advanced player performance prediction based on complex relationships between variables</p>
+  </header>
+
+  <div class="container fade-in">
+    <h2 class="text-center" style="color: var(--accent-color); margin-bottom: 1.5rem;">Player Performance Score (PR)
+    </h2>
+
+    <form action="/predict_polynomial" method="post" id="prForm">
+      <div class="form-group">
+        <label for="matches_played">Matches Played</label>
+        <input type="number" id="matches_played" name="matches_played" required min="0" placeholder="Number of matches played">
+      </div>
+
+      <div class="form-group">
+        <label for="training_hours">Training Hours</label>
+        <input type="number" id="training_hours" name="training_hours" required min="0" step="0.5" placeholder="Hours spent in training">
+      </div>
+
+      <div class="form-group">
+        <label for="fitness_score">Fitness Score</label>
+        <input type="number" id="fitness_score" name="fitness_score" required min="1" max="10" step="0.1" placeholder="Fitness score (1-10)">
+      </div>
+
+      <div class="form-group">
+        <label for="coach_rating">Coach Rating</label>
+        <input type="number" id="coach_rating" name="coach_rating" required min="1" max="10" step="0.1" placeholder="Coach rating (1-10)">
+      </div>
+
+      <div class="form-group">
+        <label for="age">Age</label>
+        <input type="number" id="age" name="age" required min="15" max="45" placeholder="Player's age">
+      </div>
+
+      <button type="submit" class="btn">Generate Polynomial Prediction</button>
+    </form>
+
+    {% if prediction %}
+    <div class="result">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+        <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z" />
+      </svg>
+      <span>Player Performance Score: {{ prediction }}</span>
+    </div>
+    {% endif %}
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 JV Sports Edge. All rights reserved.</p>
+  </footer>
+</body>
+
+</html>

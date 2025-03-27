@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logistic Regression Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <style>
+    :root {
+      --primary-bg: #121212;
+      --card-bg: #1e1e1e;
+      --text-color: #ffffff;
+      --accent-color: #ff6b9c;
+      --hover-color: #ff4585;
+      --input-bg: #2a2a2a;
+      --nav-bg: #0a0a0a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--primary-bg);
+      color: var(--text-color);
+      min-height: 100vh;
+      transition: all 0.3s ease;
+    }
+
+    .navbar {
+      background-color: var(--nav-bg);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(255, 107, 156, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-color);
+    }
+
+    .header {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+    }
+
+    .header p {
+      color: #888;
+      font-size: 1.1rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 5px;
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+
+    input[type="number"]:focus {
+      outline: 2px solid var(--accent-color);
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--hover-color);
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+    }
+    .error {
+      color: #dc3545;
+    }
+    .prediction {
+      color: #28a745;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo">JV Sports Edge</div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/slr">SLR Prediction</a>
+      <a href="/mlr">MLR Prediction</a>
+      <a href="/pr">PR Prediction</a>
+      <a href="/lr">LR Prediction</a>
+      <a href="/knn">kNN Prediction</a>
+    </div>
+  </nav>
+
+  <header class="header">
+    <h1>Player Selection Prediction</h1>
+    <p>Predict player selection using Logistic Regression</p>
+  </header>
+
+  <div class="container">
+    <form action="/predict_logistic" method="post" id="lrForm">
+      <div class="form-group">
+        <label for="matches_played">Matches Played</label>
+        <input type="number" id="matches_played" name="matches_played" required min="0" step="1" placeholder="e.g. 20">
+      </div>
+
+      <div class="form-group">
+        <label for="goals_scored">Goals Scored</label>
+        <input type="number" id="goals_scored" name="goals_scored" required min="0" step="1" placeholder="e.g. 5">
+      </div>
+
+      <div class="form-group">
+        <label for="assists">Assists</label>
+        <input type="number" id="assists" name="assists" required min="0" step="1" placeholder="e.g. 3">
+      </div>
+
+      <div class="form-group">
+        <label for="performance_score">Performance Score (1-10)</label>
+        <input type="number" id="performance_score" name="performance_score" required min="1" max="10" step="0.1" placeholder="e.g. 7.5">
+      </div>
+
+      <div class="form-group">
+        <label for="fitness_score">Fitness Score (1-10)</label>
+        <input type="number" id="fitness_score" name="fitness_score" required min="1" max="10" step="0.1" placeholder="e.g. 8.0">
+      </div>
+
+      <div class="form-group">
+        <label for="training_attendance">Training Attendance (%)</label>
+        <input type="number" id="training_attendance" name="training_attendance" required min="0" max="100" step="1" placeholder="e.g. 90">
+      </div>
+
+      <div class="form-group">
+        <label for="coach_rating">Coach Rating (1-10)</label>
+        <input type="number" id="coach_rating" name="coach_rating" required min="1" max="10" step="0.1" placeholder="e.g. 7.0">
+      </div>
+
+      <button type="submit" class="btn">Predict Selection</button>
+    </form>
+
+    <div id="result" class="result" style="display: none;">
+      <p id="prediction"></p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 JV Sports Edge. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('lrForm');
+      const resultDiv = document.getElementById('result');
+      const predictionText = document.getElementById('prediction');
+
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        try {
+          const formData = new FormData(form);
+          const response = await fetch('/predict_logistic', {
+            method: 'POST',
+            body: formData
+          });
+
+          const result = await response.json();
+          
+          if (result.error) {
+            predictionText.className = 'error';
+            predictionText.textContent = result.error;
+          } else {
+            predictionText.className = 'prediction';
+            predictionText.textContent = result.prediction;
+          }
+          
+          resultDiv.style.display = 'block';
+          resultDiv.scrollIntoView({ behavior: 'smooth' });
+        } catch (error) {
+          console.error('Error:', error);
+          predictionText.className = 'error';
+          predictionText.textContent = 'An error occurred while making the prediction. Please try again.';
+          resultDiv.style.display = 'block';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
